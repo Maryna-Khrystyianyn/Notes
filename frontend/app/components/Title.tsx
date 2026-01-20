@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import SplitText from "gsap/SplitText";
@@ -5,19 +7,21 @@ import SplitText from "gsap/SplitText";
 gsap.registerPlugin(SplitText);
 
 export default function RollingTitle() {
-  const stageRef = useRef(null);
-  const textRef = useRef(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     const stage = stageRef.current;
     const txt = textRef.current;
 
+    if (!stage || !txt) return; // перевірка на null
+
     const style = getComputedStyle(document.body);
-    const weightInit = parseInt(style.getPropertyValue("--fw"));
+    const weightInit = parseInt(style.getPropertyValue("--fw")) || 700;
     const weightTarget = 400;
     const weightDiff = weightInit - weightTarget;
 
-    const stretchInit = parseInt(style.getPropertyValue("--fs"));
+    const stretchInit = parseInt(style.getPropertyValue("--fs")) || 100;
     const stretchTarget = 80;
     const stretchDiff = stretchInit - stretchTarget;
 
@@ -51,7 +55,8 @@ export default function RollingTitle() {
     }
 
     function calcFracDispersion(index: number) {
-      const dispersion = 1 - Math.abs(index - charIndexSelected) / (numChars * elasticDropOff);
+      const dispersion =
+        1 - Math.abs(index - charIndexSelected) / (numChars * elasticDropOff);
       return dispersion * dragYScale;
     }
 
@@ -97,11 +102,12 @@ export default function RollingTitle() {
       };
 
       chars.forEach((char, index) => {
-        char.addEventListener("mousedown", (e: any) => {
-          mouseInitialY = e.clientY;
-          charIndexSelected = index;
-          isMouseDown = true;
-          body.classList.add("grab");
+        char.addEventListener("mousedown", (e) => {
+            const ev = e as MouseEvent;
+            mouseInitialY = ev.clientY;
+            charIndexSelected = index;
+            isMouseDown = true;
+            body.classList.add("grab");
         });
       });
     }
@@ -131,7 +137,14 @@ export default function RollingTitle() {
   return (
     <div className="stage" ref={stageRef}>
       <div className="content">
-        <h1 className="txt text-white" style={{ WebkitTextStroke: "5px #a855f7",textShadow: ` 0 0 10px #a855f7, 0 0 20px #a855f7, 0 0 40px #a855f7 `}} ref={textRef}>
+        <h1
+          ref={textRef}
+          className="txt text-white"
+          style={{
+            WebkitTextStroke: "5px #a855f7",
+            textShadow: "0 0 10px #a855f7, 0 0 20px #a855f7, 0 0 40px #a855f7",
+          }}
+        >
           My notes
         </h1>
       </div>
