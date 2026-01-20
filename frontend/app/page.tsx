@@ -5,6 +5,7 @@ import NotesList from "./components/NotesList";
 import NoteModal from "./components/notemodal";
 import RollingTitle from "./components/Title";
 import { AnimatePresence } from "framer-motion";
+import { API_URL } from "./config";
 
 export default function Home() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -14,14 +15,14 @@ export default function Home() {
   // завантаження нотаток
   useEffect(() => {
     (async () => {
-      const res = await fetch("http://127.0.0.1:8000/notes");
+      const res = await fetch(`${API_URL}/notes`);
       const data = await res.json();
       setNotes(data);
     })();
   }, []);
 
   const deleteNote = async (id: number) => {
-    await fetch(`http://127.0.0.1:8000/notes/${id}`, { method: "DELETE" });
+    await fetch(`${API_URL}/notes/${id}`, { method: "DELETE" });
     setNotes((prev) => prev.filter((n) => n.id !== id));
     if (selected?.id === id) setSelected(null);
   };
@@ -34,7 +35,7 @@ export default function Home() {
   }) => {
     if (note.id) {
       // редагування
-      const res = await fetch(`http://127.0.0.1:8000/notes/${note.id}`, {
+      const res = await fetch(`${API_URL}/notes/${note.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(note),
@@ -44,7 +45,7 @@ export default function Home() {
       setSelected(updated);
     } else {
       // створення нової
-      const res = await fetch("http://127.0.0.1:8000/notes", {
+      const res = await fetch(`${API_URL}/notes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(note),

@@ -1,0 +1,1 @@
+export const API_URL = "https://notes-ja7f.onrender.com";
