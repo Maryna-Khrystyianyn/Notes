@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+:root {
+  --fw: 600;
+  --fs: 150;
+}
+.stage {
+  visibility: hidden;
+}
+.txt {
+  font-size: 8vw;
+  font-weight: 900;
+  font-stretch: calc(var(--fs) * 1%);
+  line-height: 0.6;
+  letter-spacing: -0.5vw;
+  user-select: none;
+}
+.char {
+  display: inline-block;
+  will-change: transform, font-weight, font-stretch;
+}
