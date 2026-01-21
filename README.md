@@ -1,7 +1,7 @@
 
 
 # Notes App 📝
-https://notes-git-main-marynas-projects-c5a53b20.vercel.app/
+https://notes-olive-six-21.vercel.app/
 
 This is my first web application with a full Python backend.
 The project allows you to create, view, edit, and delete notes via a web interface.
